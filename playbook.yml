@@ -1,0 +1,7 @@
+---
+- hosts: vagrant
+  sudo: true
+  roles:
+    - init
+    - rvm
+    - nginx

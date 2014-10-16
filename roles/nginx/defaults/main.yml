@@ -1,0 +1,117 @@
+---
+nginx_user: 'deploy'
+
+nginx_worker_priority: '0'
+nginx_worker_processes: '{{ ansible_processor_cores }}'
+nginx_worker_connections: 1024
+
+# Maximum number of opened files per process, must be higher than worker_connections
+nginx_worker_rlimit_nofile: 4096
+
+# Enables or disables emitting nginx version in error messages and in the “Server” response header field.
+nginx_server_tokens: 'off'
+
+nginx_server_names_hash_bucket_size: 64
+nginx_server_names_hash_max_size: 512
+
+# Hash of symlinks to local server definitions stored in /etc/nginx/sites-local/
+# Entries with empty values or False will be removed
+# Symlinks will be created in /etc/nginx/sites-enabled/
+nginx_local_servers: {}
+  #'symlink': 'file'
+  #'other-symlink.conf': 'sub/directory/file.conf'
+  #'removed-file': False
+  #'also-removed':
+  #'symlink\ with\ spaces.conf': 'other-file.conf'
+
+nginx_default_keepalive_timeout: 60
+
+nginx_upstreams: [ '{{ nginx_upstream_rails }}' ]
+
+nginx_upstream_rails:
+  enabled: True
+  name: 'rails-data'
+  type: 'rails'
+
+# Create global webroot directories?
+# Path: /home/nginx_user/server_name/public
+nginx_webroot_create: True
+nginx_webroot_owner: 'root'
+nginx_webroot_group: 'root'
+nginx_webroot_mode: '0755'
+
+# server_name which will be marked as default
+nginx_default_name: '{{ ansible_fqdn }}'
+
+# List of nginx server definitions
+nginx_servers: [ '{{ nginx_server_default }}' ]
+
+# Default server template used if no type is selected
+nginx_default_type: 'default'
+
+# Default nginx site - options commented out are optional
+nginx_server_default:
+  enabled: True
+  name: [ 'rails' ]
+  default: True
+  #by_role: ''
+  #locked: False
+  #delete: False
+  #userdir: False
+  #type: 'default'
+  #redirect: 'http://other.example.com/'
+  #redirect_ssl: 'http://other.example.com/'
+  #redirect_code: '307'
+  #redirect_from: False/True or []
+  ssl: False
+  #ssl_type: 'selfsigned'
+  #ssl_ciphers: 'pfs'
+  #ssl_curve: 'secp384r1'
+  #ssl_name: '{{ ansible_fqdn }}'
+  #ssl_cert: '/path/to/server/certificate.crt'
+  #ssl_key: '/path/to/server/keyfile.key'
+  #owner: 'root'
+  #group: 'root'
+  #keepalive: 60
+  #favicon: True
+  #listen:
+  #  - '80'
+  #listen_ssl:
+  #  - '443'
+  #root: '{{ nginx_default_root }}'
+  #status:
+  #  - '127.0.0.0/8'
+  #options: |
+  #  # Literal text block;
+  #  # With options;
+  #error_pages:
+  #  '404': '/404.html'
+  #location: |
+  #  '/':
+  #    try_files $uri $uri/ $uri.html $uri.htm /index.html /index.htm =404;
+  #  '/doc/': |
+  #    alias /usr/share/doc/;
+  #    autoindex on;
+  #location_allow:
+  #  '/doc/':
+  #    - '127.0.0.1'
+  #    - '::1'
+  # location_allow without corresponding location_deny implies deny all
+  #location_deny:
+  #  '/doc/':
+  #    - 'all'
+  #location_referers:
+  #  '/': [ '{{ ansible_fqdn }}', 'www.{{ ansible_fqdn }}', '*.{{ ansible_domain }}' ]
+  #location_list:
+  #  - pattern: '/'
+  #    pattern_prefix: ''  # for example, '@' to have 'location "@pattern"'
+  #    referers: [ '{{ ansible_fqdn }}', 'www.{{ ansible_fqdn }}', '*.{{ ansible_domain }}' ]
+  #    allow: [ '127.0.0.1', '::1' ]
+  #    deny: []
+  #    options: |
+  #      try_files $uri $uri/ $uri.html $uri.htm /index.html /index.htm =404;
+  #    locations:
+  #      - pattern: '/subdir'
+  #
+  # Additional parameters can be found in nginx server templates:
+  #    templates/etc/nginx/sites-available/*.conf.j2
