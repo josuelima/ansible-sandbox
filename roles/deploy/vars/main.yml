@@ -1,0 +1,12 @@
+---
+# Environment variables
+rails_deploy_env:
+  test: 'ok'
+
+# SSH KEYS for deploys with github
+ssh_local_folder: '/home/josuelima/.ssh/tests'
+rails_deploy_ssh_public_key_name:  'id_rsa.pub'
+rails_deploy_ssh_private_key_name: 'id_rsa'
+
+# test app
+rails_deploy_git_url: 'git@github.com:josuelima/bolao.git'

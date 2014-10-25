@@ -1,0 +1,10 @@
+---
+- include: environments.yml
+- include: ssh_keys.yml
+- include: git.yml
+
+# - name: Secure app home directory
+#   file: path={{ deploy_home }}
+#         state=directory
+#         owner={{ deploy_user }} group={{ deploy_user }}
+#         mode=0751

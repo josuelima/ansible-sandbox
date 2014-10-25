@@ -1,0 +1,3 @@
+---
+- name: ensure /etc/default/{{ app_name }} is created
+  template: src=env.j2 dest=/etc/default/{{ app_name }}

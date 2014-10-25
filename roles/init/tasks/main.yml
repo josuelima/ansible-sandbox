@@ -11,3 +11,4 @@
     - nodejs
     - mysql-client
     - libmysqlclient-dev
+    - git-core

@@ -1,7 +1,10 @@
 ---
 - hosts: vagrant
   sudo: true
+  vars_files:
+    - [ "vars/global.yml" ]
   roles:
-    - init
-    - rvm
-    - nginx
+    # - init
+    # - rvm
+    # - nginx
+    - deploy
