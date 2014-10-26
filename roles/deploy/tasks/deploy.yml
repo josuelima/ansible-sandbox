@@ -17,9 +17,14 @@
   sudo_user: '{{ deploy_user }}'
   register: rails_database_exists
 
+# Load schema only when the database has just been created on the previows task
 - name: Load database schema
   command: bundle exec rake db:schema:load RAILS_ENV={{ rails_deploy_system_env }}
            chdir={{ deploy_home }}
   when: rails_database_exists.stderr.find('already exists') == -1
   sudo_user: '{{ deploy_user }}'
-  
+
+- name: Run migrations
+  command: bundle exec rake db:migrate RAILS_ENV={{ rails_deploy_system_env }}
+           chdir={{ deploy_home }}
+  sudo_user: '{{ deploy_user }}'
