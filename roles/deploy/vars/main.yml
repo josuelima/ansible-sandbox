@@ -25,3 +25,5 @@ rails_deploy_bundle_without:
   - test
 
 rails_deploy_system_env: 'production'
+
+rails_deploy_database_create: True

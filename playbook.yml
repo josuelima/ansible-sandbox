@@ -7,5 +7,5 @@
     # - init
     # - rvm
     # - nginx
-    # - mysql
+    - mysql
     - deploy

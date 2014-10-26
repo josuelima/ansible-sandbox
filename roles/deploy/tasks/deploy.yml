@@ -4,6 +4,22 @@
     dest: '{{ deploy_home }}/config/database.yml'
 
 - name: Update gems
-  command: bundle install --deployment --without={{ rails_deploy_bundle_without | difference([rails_deploy_system_env]) | join(',') }}
+  command: bundle install --deployment --without={{ rails_deploy_bundle_without | difference([rails_deploy_system_env]) | join(' ') }}
+           chdir={{ deploy_home }}
+  changed_when: False
+  when: rails_deploy_register_repo_status is defined and
+        rails_deploy_register_repo_status | changed
+  sudo_user: '{{ deploy_user }}'
+
+- name: Create database
+  command: bundle exec rake db:create RAILS_ENV={{ rails_deploy_system_env }}
            chdir={{ deploy_home }}
   sudo_user: '{{ deploy_user }}'
+  register: rails_database_exists
+
+- name: Load database schema
+  command: bundle exec rake db:schema:load RAILS_ENV={{ rails_deploy_system_env }}
+           chdir={{ deploy_home }}
+  when: rails_database_exists.stderr.find('already exists') == -1
+  sudo_user: '{{ deploy_user }}'
+  

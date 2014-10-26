@@ -29,8 +29,6 @@ mysql_mysqld_options: {}
 mysql_password_length: '20'
 
 # Password for MySQL root user
-#mysql_root_password: "password"
-
 mysql_root_password: "{{ lookup('password', '/tmp/credentials/mysqlpassword length=20') }}"
 
 # List of MySQL users to manage (defaults first)
