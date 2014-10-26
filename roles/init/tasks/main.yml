@@ -9,6 +9,4 @@
   with_items:
     - curl
     - nodejs
-    - mysql-client
-    - libmysqlclient-dev
     - git-core

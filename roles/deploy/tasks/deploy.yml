@@ -1,0 +1,9 @@
+- name: Copy rails database configs
+  template:
+    src: 'config/database.yml.j2'
+    dest: '{{ deploy_home }}/config/database.yml'
+
+- name: Update gems
+  command: bundle install --deployment --without={{ rails_deploy_bundle_without | difference([rails_deploy_system_env]) | join(',') }}
+           chdir={{ deploy_home }}
+  sudo_user: '{{ deploy_user }}'

@@ -3,10 +3,25 @@
 rails_deploy_env:
   test: 'ok'
 
+rails_deploy_branch: 'deploy'
+
 # SSH KEYS for deploys with github
 ssh_local_folder: '/home/josuelima/.ssh/tests'
 rails_deploy_ssh_public_key_name:  'id_rsa.pub'
 rails_deploy_ssh_private_key_name: 'id_rsa'
 
-# test app
+# test app git
 rails_deploy_git_url: 'git@github.com:josuelima/bolao.git'
+
+# mysql configs
+rails_mysql_db: '{{ app_name }}'
+rails_mysql_user: 'root'
+rails_mysql_password: "{{ lookup('password', '/tmp/credentials/mysqlpassword length=20') }}"
+
+rails_deploy_bundle_without:
+  - development
+  - staging
+  - production
+  - test
+
+rails_deploy_system_env: 'production'
