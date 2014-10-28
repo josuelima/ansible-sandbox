@@ -30,8 +30,9 @@ nginx_upstreams: [ '{{ nginx_upstream_rails }}' ]
 
 nginx_upstream_rails:
   enabled: True
-  name: 'rails-data'
+  name: '{{ app_name }}'
   type: 'rails'
+  server: '{{ socket_path }}'
 
 # Create global webroot directories?
 # Path: /home/nginx_user/server_name/public

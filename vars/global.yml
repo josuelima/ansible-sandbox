@@ -2,3 +2,6 @@
 app_name: 'bolao'
 deploy_user: 'deploy'
 deploy_home: '/home/{{ deploy_user }}/{{ app_name }}'
+
+run_path: '/var/run/{{ app_name }}'
+socket_path: 'unix://{{ run_path }}/{{ app_name }}.sock'

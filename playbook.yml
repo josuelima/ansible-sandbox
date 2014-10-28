@@ -4,8 +4,8 @@
   vars_files:
     - [ "vars/global.yml" ]
   roles:
-    # - init
-    # - rvm
-    # - nginx
+    - init
+    - rvm
+    - nginx
     - mysql
     - deploy
