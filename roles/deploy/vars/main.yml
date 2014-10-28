@@ -30,10 +30,12 @@ rails_deploy_database_create: True
 rails_deploy_backend: 'puma'
 
 # Puma configs
-rails_puma_run: '/var/run'
+rails_puma_run: '/var/run/bolao'
+rails_puma_timeout: '60'
 rails_puma_PID: "{{ rails_puma_run }}/{{ app_name }}.pid"
 rails_puma_THREADS_MIN: 0
 rails_puma_THREADS_MAX: 16
 rails_puma_WORKERS: 2
 rails_puma_LISTEN_ON: 'unix://{{ rails_puma_run }}/{{ app_name }}.sock'
-rails_puma_LOG_FILE: '/var/log/{{ app_name }}.log'
+rails_puma_LOG_PATH: '/var/{{ app_name }}/log'
+rails_puma_LOG_FILE: '{{ rails_puma_LOG_PATH }}/{{ app_name }}.log'

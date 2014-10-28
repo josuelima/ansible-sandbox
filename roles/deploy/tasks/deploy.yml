@@ -28,3 +28,32 @@
   command: bundle exec rake db:migrate RAILS_ENV={{ rails_deploy_system_env }}
            chdir={{ deploy_home }}
   sudo_user: '{{ deploy_user }}'
+
+
+# puma configs
+
+- name: Copy puma config file
+  template: src=config/puma.rb.j2
+            dest={{ deploy_home }}/config/puma.rb
+            owner={{ deploy_user }} group={{ deploy_user }}
+
+- name: Create src, log and run state paths
+  file: path={{ item }}
+      state=directory
+      owner={{ deploy_user }} group={{ deploy_user }}
+      mode=0755
+  when: deploy_user is defined and deploy_user
+  with_items:
+    - '{{ rails_puma_LOG_PATH }}'
+    - '{{ rails_puma_run }}'
+
+- name: Create logrotate file
+  template: src=etc/logrotate.d/service.j2
+            dest=/etc/logrotate.d/{{ app_name }}
+            owner=root group=root mode=0644
+
+- name: Create application service
+  template: src=etc/init.d/service.j2 dest=/etc/init.d/{{ app_name }}
+            owner={{ deploy_user }} group={{ deploy_user }}
+            mode=0755
+  when: deploy_user is defined and deploy_user

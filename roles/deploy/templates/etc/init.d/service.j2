@@ -28,14 +28,14 @@ user="{{ deploy_user }}"
 home="{{ deploy_home }}"
 src="{{ deploy_home }}"
 
-env_source="{{ rails_deploy_env_source }}"
+# env_source=""
 
-run="{{ rails_deploy_run }}"
+run="{{ rails_puma_run }}"
 bin="{{ deploy_home }}/bin/{{ rails_deploy_tpl_bin }}"
 
-socket="{{ rails_deploy_service_socket }}"
+socket="{{ rails_puma_LISTEN_ON }}"
 pid="{{ rails_deploy_tpl_pid }}"
-service_timeout="{{ rails_deploy_service_timeout }}"
+service_timeout="{{ rails_puma_timeout }}"
 
 config="C"
 daemon="d"
@@ -45,23 +45,26 @@ config_flag="-$config $src/config/{{ rails_deploy_tpl_config }}"
 # ---------------------------------------------------------------------------
 # source the environment, ensure correct user, and set the path
 # ---------------------------------------------------------------------------
-if ! $env_source ; then
- echo "failed to source environment for $service, exiting"; exit 1;
-fi
+#if ! $env_source ; then
+# echo "failed to source environment for $service, exiting"; exit 1;
+#fi
 
-if [ "$USER" != "$user" ]; then
-  eval su - "$user" -c $(echo \")$0 "$@"$(echo \"); exit;
-fi
+#if [ "$USER" != "$user" ]; then
+#  eval su - "$user" -c $(echo \")$0 "$@"$(echo \"); exit;
+#fi
 
-if ! cd "$src" ; then
- echo "failed to cd into $src, exiting"; exit 1;
-fi
+#if ! cd "$src" ; then
+# echo "failed to cd into $src, exiting"; exit 1;
+#fi
 
 # ---------------------------------------------------------------------------
 # private commands to control {{ rails_deploy_tpl_label }}
 # ---------------------------------------------------------------------------
+
+#  | logger -t {{ rails_deploy_backend }} &
+
 service_start(){
-$bundle exec $bin $config_flag -$daemon 2>&1 | logger -t {{ rails_deploy_backend }} &
+$bundle exec $bin -e production $config_flag -$daemon 2>&1
 }
 
 service_stop(){
@@ -176,10 +179,7 @@ start() {
   if [ "$service_status" = "0" ]; then
     echo "$service is already running with pid $wpid, not restarting"
   else
-{% if item == 'service' %}
-    # remove old socket if it exists before starting
     rm -f "$socket" 2>/dev/null
-{% endif %}
     service_start
   fi
 
@@ -280,11 +280,9 @@ case "$1" in
   restart)
         restart
         ;;
-{% if item == 'service' %}
   reload|force-reload)
         reload
         ;;
-{% endif %}
   status)
         print_status
         exit $exit_status
