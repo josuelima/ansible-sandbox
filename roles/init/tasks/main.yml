@@ -1,5 +1,5 @@
 ##
-# Initial server configures / base requirements
+# Initial server configurations and base requirements
 ---
 - name: update cache
   sudo: yes

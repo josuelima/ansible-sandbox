@@ -1,0 +1,20 @@
+# MySQL config file
+# This file is managed by Ansible, all in production changes will be lost
+# Source: http://github.com/josuelima/ansible-sandbox
+
+[mysqld]
+bind-address    = {{ mysql_bind_address }}
+port            = {{ mysql_port }}
+max-connections = {{ mysql_max_con }}
+
+character-set-server  = {{ mysql_server_charset }}
+collation-server      = {{ mysql_server_collation }}
+init-connect          = '{{ mysql_init_connect }}'
+
+{% if mysql_options is defined and mysql_options is not none %}
+{% for key, value in mysql_options.iteritems() %}
+{{ key }}{% if value is not none %} = {{ value }}{% endif %}
+
+{% endfor %}
+
+{% endif %}

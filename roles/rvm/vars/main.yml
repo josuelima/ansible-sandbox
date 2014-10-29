@@ -12,6 +12,8 @@ rvm_upgrade:      False
 
 ##
 # Ruby variables
+
+# Versions you want to install
 rvm_rubies:
   - 'ruby-2.1.2'
 rvm_default_ruby_version: '{{ rvm_rubies | last if rvm_rubies and rvm_rubies is iterable else "" }}'

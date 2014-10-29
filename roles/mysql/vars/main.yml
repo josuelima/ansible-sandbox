@@ -1,0 +1,21 @@
+##
+# RVM variables
+
+# Bind address of mysqld. If you want to allow access to the server over the
+# network, change this to '0.0.0.0' (for all interfaces) or for specific IP
+# address to bind on
+mysql_bind_address: 'localhost'
+
+mysql_port:    3306
+mysql_max_con: 100
+
+mysql_server_charset:   'utf8'
+mysql_server_collation: 'utf8_general_ci'
+mysql_init_connect:     'SET NAMES utf8'
+mysql_default_charset:  'utf8'
+
+mysql_user: '{{ database_user }}'
+mysql_pass: '{{ database_pass }}'
+
+# options to be loaded in mysqld.cnf file
+mysql_options: {}

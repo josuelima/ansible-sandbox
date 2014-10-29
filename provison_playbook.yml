@@ -6,6 +6,7 @@
   vars_files: 
     - ['vars/global.yml']
   roles:
-    - init
-    - users
-    - rvm
+    #- init
+    #- users
+    #- rvm
+    - mysql

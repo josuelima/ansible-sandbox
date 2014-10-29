@@ -4,3 +4,7 @@ app_name:       bolao
 app_user:       deploy
 user_home:      '/home/{{ app_user }}'
 app_user_group: deploy
+
+# Database variables
+database_user: 'root'
+database_pass: "{{ lookup('password', '/tmp/credentials/db_pass length=20') }}"

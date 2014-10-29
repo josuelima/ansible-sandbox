@@ -1,0 +1,8 @@
+##
+# MySQL service controll
+---
+- name: Restart mysql
+  service: name=mysql state=restarted
+
+- name: Reload mysql
+  service: name=mysql state=reloaded
