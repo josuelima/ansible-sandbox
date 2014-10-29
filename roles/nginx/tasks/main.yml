@@ -1,0 +1,6 @@
+##
+# Install and configures nginx
+
+- include: install.yml
+- include: configs.yml
+- include: servers.yml

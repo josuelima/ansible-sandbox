@@ -1,0 +1,6 @@
+# Sudoers configs for nginx group
+# This file is managed by Ansible, all in production changes will be lost
+# Source: http://github.com/josuelima/ansible-sandbox
+
+Cmnd_Alias NGINX_RELOAD = /etc/init.d/nginx reload
+%{{ nginx_privileged_group }} ALL = (root) NOPASSWD: NGINX_RELOAD

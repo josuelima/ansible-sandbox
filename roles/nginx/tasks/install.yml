@@ -1,0 +1,78 @@
+##
+# Install nginx
+---
+- name: Check if nginx is installed
+  stat:     path=/usr/sbin/nginx
+  register: nginx_register_installed
+
+- name: Install nginx packages
+  apt:
+    name:  '{{ item }}'
+    state: 'latest'
+    install_recommends: False
+  with_items:
+    - nginx-full
+
+- name: Restart nginx on first install to bypass missing pid bug
+  service:
+    name:  'nginx'
+    state: 'restarted'
+  when: ((nginx_register_installed is defined and nginx_register_installed) and
+         not nginx_register_installed.stat.exists)
+
+- name: Check nginx version
+  shell:    /usr/sbin/nginx -v 2>&1 | sed -e 's#^.*/##'
+  register: nginx_version
+  changed_when: False
+
+- name: Get list of nameservers configured in /etc/resolv.conf
+  shell: grep nameserver /etc/resolv.conf | awk '{print $2}' | sed -e 'N;s/\n/ /'
+  register: nginx_register_nameservers
+  changed_when: False
+
+- name: Convert list of nameservers to Ansible list
+  set_fact:
+    nginx_ocsp_resolvers: "{{ nginx_register_nameservers.stdout.split(' ') }}"
+  when: (nginx_ocsp_resolvers is undefined or
+         (nginx_ocsp_resolvers is defined and not nginx_ocsp_resolvers))
+
+- name: Ensure that webadmins privileged group exists
+  group:
+    name: '{{ nginx_privileged_group }}'
+    state: 'present'
+    system: True
+
+- name: Create directory for webadmins configuration
+  file:
+    path:  '/etc/nginx/sites-local'
+    state: 'directory'
+    owner: 'deploy'
+    group: '{{ nginx_privileged_group }}'
+    mode:  '0775'
+
+- name: Allow webadmins to reload nginx using sudo
+  template:
+    src:   'etc/sudoers.d/nginx_webadmins.j2'
+    dest:  '/etc/sudoers.d/nginx_webadmins'
+    owner: 'root'
+    group: 'root'
+    mode:  '0440'
+
+- name: Divert original /etc/nginx/nginx.conf
+  command: dpkg-divert --quiet --local --divert /etc/nginx/nginx.conf.dpkg-divert
+           --rename /etc/nginx/nginx.conf creates=/etc/nginx/nginx.conf.dpkg-divert
+
+- name: Setup /etc/nginx/nginx.conf
+  template:
+    src:   'etc/nginx/nginx.conf.j2'
+    dest:  '/etc/nginx/nginx.conf'
+    owner: 'root'
+    group: 'root'
+    mode:  '0644'
+  notify: ['Test nginx and reload']
+
+- name: Disable default nginx site
+  file:
+    path:  '/etc/nginx/sites-enabled/default'
+    state: 'absent'
+  notify: ['Test nginx and reload']

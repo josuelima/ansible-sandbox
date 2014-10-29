@@ -64,7 +64,7 @@
 
 - name: Delete anonymous mysql user
   mysql_user:
-    user:  ""
+    user:  ''
     host:  '{{ item }}'
     state: 'absent'
   with_items: 

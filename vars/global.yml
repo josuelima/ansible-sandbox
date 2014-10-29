@@ -2,9 +2,14 @@
 # Global variables available to all roles
 app_name:       bolao
 app_user:       deploy
-user_home:      '/home/{{ app_user }}'
+app_user_home:  '/home/{{ app_user }}'
 app_user_group: deploy
+app_home_path:  '{{ app_user_home }}/{{ app_name }}'
 
 # Database variables
 database_user: 'root'
 database_pass: "{{ lookup('password', '/tmp/credentials/db_pass length=20') }}"
+
+# Running variables for sockets
+app_run_path:    '/var/run/{{ app_name }}'
+app_socket_path: 'unix://{{ app_run_path }}/{{ app_name }}.sock'

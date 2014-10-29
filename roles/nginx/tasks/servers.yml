@@ -1,0 +1,29 @@
+##
+# Nginx servers
+---
+- name: Remove default server from available if exists
+  file:
+    path:  '/etc/nginx/sites-available/default'
+    state: absent
+
+- name: Remove default server from enabled if exists
+  file:
+    path:  '/etc/nginx/sites-enabled/default'
+    state: absent
+
+- name: Configure nginx servers
+  template:
+    src:   'etc/nginx/sites-available/default.conf.j2'
+    dest:  '/etc/nginx/sites-available/{{ app_name }}'
+    owner: 'root'
+    group: 'root'
+    mode:  '0644'
+
+- name: Enable nginx server configuration
+  file:
+    path:  '/etc/nginx/sites-enabled/{{ app_name }}'
+    src:   '/etc/nginx/sites-available/{{ app_name }}'
+    state: 'link'
+    owner: 'root'
+    group: 'root'
+    mode:  '0644'

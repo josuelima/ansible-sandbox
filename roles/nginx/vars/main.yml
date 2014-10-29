@@ -1,0 +1,27 @@
+##
+# nginx variables
+nginx_privileged_group: 'webadmins'
+
+nginx_user: '{{ app_user }}'
+
+nginx_worker_priority:    '0'
+nginx_worker_processes:   '{{ ansible_processor_cores }}'
+nginx_worker_connections: 1024
+
+# Maximum number of opened files per process, must be higher than worker_connections
+nginx_worker_rlimit_nofile: 4096
+
+# Enables or disables emitting nginx version in error messages and in the “Server” response header field.
+nginx_server_tokens: 'off'
+
+nginx_server_names_hash_bucket_size: 64
+nginx_server_names_hash_max_size:    512
+
+# Upstreams
+nginx_upstreams: ['{{ nginx_upstream_default }}']
+
+nginx_upstream_default:
+  enabled: True
+  name:    '{{ app_name }}'
+  type:    'rails'
+  server:  '{{ app_socket_path }}'
