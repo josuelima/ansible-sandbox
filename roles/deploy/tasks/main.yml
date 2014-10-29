@@ -1,0 +1,7 @@
+##
+# Deploy rails app
+# code hosted on a git repository
+---
+- include: git.yml
+- include: app_config.yml
+- include: puma.yml

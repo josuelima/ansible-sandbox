@@ -42,8 +42,9 @@
 
 - name: Update rvm
   shell: '{{ rvm_bin }} get stable && {{ rvm_bin }} reload'
-  when: rvm_binary.stat.exists and
-        rvm_version.content | default(rvm_stable_vers) | replace('\n', '') > rvm_current_version.stdout.split()[1]
+  when: ((rvm_binary.stat.exists and
+          rvm_upgrade == True) and
+          rvm_version.content | default(rvm_stable_vers) | replace('\n', '') > rvm_current_version.stdout.split()[1])
 
 - name: Configure rvm
   command: '{{ rvm_bin }} autolibs 3'

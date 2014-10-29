@@ -1,0 +1,11 @@
+##
+# This playbook configures and deploy a rails app
+# to a pre-configured ubuntu host
+---
+- hosts: vagrant
+  user:  deploy
+  sudo:  true
+  vars_files: 
+    - ['vars/global.yml']
+  roles:
+    - deploy

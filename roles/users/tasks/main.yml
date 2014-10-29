@@ -19,7 +19,7 @@
                   path="{{ users_ssh_path }}/authorized_keys"
 
 - name: copy private ssh key to server
-  copy: src="{{ users_ssh_app_key }}"
+  copy: src="{{ users_ssh_app_prv_key }}"
         dest="{{ users_ssh_path }}/id_rsa"
         owner={{ app_user }}
         group={{ app_user_group }}

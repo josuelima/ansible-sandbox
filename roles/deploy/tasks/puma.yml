@@ -1,0 +1,7 @@
+##
+# App puma configs
+---
+- name: Copy puma config file
+  template: src=config/puma.rb.j2
+            dest={{ deploy_home }}/config/puma.rb
+            owner={{ deploy_user }} group={{ deploy_user }}

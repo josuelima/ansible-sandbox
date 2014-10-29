@@ -1,0 +1,8 @@
+# Database configs
+# This file is managed by Ansible, all in production changes will be lost
+# Source: http://github.com/josuelima/ansible-sandbox
+production:
+  adapter:  mysql2
+  database: {{ database_name }}
+  username: {{ database_user }}
+  password: {{ database_pass }}

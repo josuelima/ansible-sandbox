@@ -1,5 +1,5 @@
 ##
 # Variables for user roles
-users_ssh_path:         "{{ user_home }}/.ssh"
-users_ssh_app_key:      "~/.ssh/tests/id_rsa"
+users_ssh_path:         "{{ app_user_home }}/.ssh"
+users_ssh_app_prv_key:  "{{ credentials_path }}/id_rsa"
 users_ssh_local_pubkey: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

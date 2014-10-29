@@ -1,0 +1,9 @@
+##
+# Clone from git
+---
+- name: ensure local git repo is updated
+  git:  repo={{ app_repo_url }} 
+        dest={{ app_home_path }} 
+        accept_hostkey=yes
+        version={{ app_version }}
+  sudo_user: '{{ app_user }}'

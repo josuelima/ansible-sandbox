@@ -1,0 +1,29 @@
+##
+# App config files / gems / database
+---
+- name: Copy rails database configs
+  template:
+    src:  'config/database.yml.j2'
+    dest: '{{ app_home_path }}/config/database.yml'
+
+- name: Install / update gems
+  command: bundle install --deployment --without=development test
+           chdir={{ app_home_path }}
+  sudo_user: '{{ app_user }}'
+
+- name: Create database
+  command: bundle exec rake db:create RAILS_ENV=production
+           chdir={{ app_home_path }}
+  sudo_user: '{{ app_user }}'
+  register: rails_database_exists
+
+- name: Load database schema if database exists
+  command: bundle exec rake db:schema:load RAILS_ENV=production
+           chdir={{ app_home_path }}
+  when: rails_database_exists.stderr.find('already exists') == -1
+  sudo_user: '{{ app_user }}'
+
+- name: Run migrations
+  command: bundle exec rake db:migrate RAILS_ENV=production
+           chdir={{ app_home_path }}
+  sudo_user: '{{ app_user }}'
