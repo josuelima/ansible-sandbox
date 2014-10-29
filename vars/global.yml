@@ -1,7 +1,6 @@
----
-app_name: 'bolao'
-deploy_user: 'deploy'
-deploy_home: '/home/{{ deploy_user }}/{{ app_name }}'
-
-run_path: '/var/run/{{ app_name }}'
-socket_path: 'unix://{{ run_path }}/{{ app_name }}.sock'
+##
+# Global variables available to all roles
+app_name:       bolao
+app_user:       deploy
+user_home:      '/home/{{ app_user }}'
+app_user_group: deploy

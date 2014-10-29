@@ -1,0 +1,11 @@
+##
+# This playbook configures a server ready to run a rails app
+---
+- hosts: vagrant
+  sudo:  true
+  vars_files: 
+    - ['vars/global.yml']
+  roles:
+    - init
+    - users
+    - rvm

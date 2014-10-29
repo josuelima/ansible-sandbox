@@ -1,0 +1,26 @@
+##
+# Tasks for creating deploy user and saving ssh keys
+---
+- name:  create user group
+  sudo:  yes
+  group: name={{ app_user_group }} state=present
+
+- name: create user
+  sudo: yes
+  user: name={{ app_user }} comment="Managed by Ansible" groups="sudo,admin,{{ app_user_group }}"
+        shell=/bin/bash
+
+##
+# SSH keys tasks
+- name: allow ssh access using ssh keys
+  authorized_key: key="{{ users_ssh_local_pubkey }}"
+                  user={{ app_user }}
+                  manage_dir=yes
+                  path="{{ users_ssh_path }}/authorized_keys"
+
+- name: copy private ssh key to server
+  copy: src="{{ users_ssh_app_key }}"
+        dest="{{ users_ssh_path }}/id_rsa"
+        owner={{ app_user }}
+        group={{ app_user_group }}
+        mode=0600

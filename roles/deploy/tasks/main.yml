@@ -1,5 +1,0 @@
----
-- include: environments.yml
-- include: ssh_keys.yml
-- include: git.yml
-- include: deploy.yml
