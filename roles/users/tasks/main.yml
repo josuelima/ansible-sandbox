@@ -12,15 +12,30 @@
 
 ##
 # SSH keys tasks
-- name: allow ssh access using ssh keys
+- name: allow ssh access using ssh keys for deployer
   authorized_key: key="{{ users_ssh_local_pubkey }}"
                   user={{ app_user }}
                   manage_dir=yes
                   path="{{ users_ssh_path }}/authorized_keys"
 
-- name: copy private ssh key to server
+- name: allow ssh access using ssh keys for root
+  authorized_key: key="{{ users_ssh_local_pubkey }}"
+                  user={{ root_user }}
+                  manage_dir=yes
+                  path="/home/{{ root_user }}/.ssh/authorized_keys"
+
+- name: copy private ssh key to deployer
   copy: src="{{ users_ssh_app_prv_key }}"
         dest="{{ users_ssh_path }}/id_rsa"
         owner={{ app_user }}
         group={{ app_user_group }}
         mode=0600
+
+- name: Disallow SSH password authentication
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp="^PasswordAuthentication"
+    line="PasswordAuthentication no"
+    state=present
+  notify:
+    - restart sshd

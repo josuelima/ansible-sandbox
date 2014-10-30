@@ -1,6 +1,6 @@
 ##
 # This playbook configures a server ready to run a rails app
-# ATT: run this playbook with --ask-pass if its a brand new host
+# ATT: run this playbook with --ask-pass if it's the very first access
 ---
 - hosts: vagrant
   user:  vagrant

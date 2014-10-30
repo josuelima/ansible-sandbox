@@ -1,6 +1,7 @@
 ##
 # Credentials path on your local machine
 credentials_path: '/etc/ansible/credentials'
+root_user:        'vagrant'
 
 # Global variables available to all roles
 app_name:       bolao
