@@ -3,5 +3,27 @@
 ---
 - name: Copy puma config file
   template: src=config/puma.rb.j2
-            dest={{ deploy_home }}/config/puma.rb
-            owner={{ deploy_user }} group={{ deploy_user }}
+            dest={{ app_home_path }}/config/puma.rb
+            owner={{ app_user }} group={{ app_user_group }}
+
+- name: Create src, log and run state paths
+  file: path={{ item }}
+        state=directory
+        owner={{ app_user }} group={{ app_user_group }}
+        mode=0755
+  with_items:
+    - '{{ puma_LOG_PATH }}'
+    - '{{ puma_run }}'
+
+- name: Create logrotate file
+  template: src=etc/logrotate.d/service.j2
+            dest=/etc/logrotate.d/{{ app_name }}
+            owner=root group=root mode=0644
+
+- name: Create application service
+  template: src=etc/init.d/service.j2 dest=/etc/init.d/{{ app_name }}
+            owner={{ app_user }} group={{ app_user }}
+            mode=0755
+
+- name: Restart puma
+  service: name=bolao state=restarted

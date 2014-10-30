@@ -1,0 +1,14 @@
+##
+# Variables for deployment app
+puma_run:     '{{ app_run_path }}'
+puma_timeout: '60'
+puma_PID:     "{{ puma_run }}/{{ app_name }}.pid"
+
+puma_THREADS_MIN: 0
+puma_THREADS_MAX: 16
+
+puma_WORKERS:   2
+puma_LISTEN_ON: '{{ app_socket_path }}'
+
+puma_LOG_PATH: '/var/{{ app_name }}/log'
+puma_LOG_FILE: '{{ puma_LOG_PATH }}/{{ app_name }}.log'
