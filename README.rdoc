@@ -1,0 +1,27 @@
+Ansible customizable Playbooks for configure a production Rails server and deploy Applications
+
+== provision_playbook.yml
+
+Configures a production rails server with:
+- base ubuntu requirements
+- app/deploy user
+- configure ssh keys
+- rvm
+- ruby 2.1.2
+- mysql
+- nginx
+
+== deploy_playbook.yml
+
+Deploy application to rails server previows configured
+- clone/update repo from git
+- copy template files (database, environment vars ...)
+- install/update gems
+- create/migrate database
+- compile asset
+- configure/restart puma
+
+Currently deploying a test application ({Bolao}[http://github.com/josuelima/bolao]).
+You can test with your, just edit the variables files.
+
+Some tasks are based on {Debops}[http://debops.org/] Project.
