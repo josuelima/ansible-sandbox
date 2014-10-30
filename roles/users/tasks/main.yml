@@ -5,9 +5,18 @@
   sudo:  yes
   group: name={{ app_user_group }} state=present
 
+- name: copy sudores file for app user group
+  template: src="etc/sudoers.d/custom.j2"
+            dest="/etc/sudoers.d/custom"
+            owner={{ root_user }}
+            group=root
+            mode=0400
+  notify:
+    - restart ssh
+
 - name: create user
   sudo: yes
-  user: name={{ app_user }} comment="Managed by Ansible" groups="sudo,admin,{{ app_user_group }}"
+  user: name={{ app_user }} comment="Managed by Ansible" groups="sudo,{{ app_user_group }}"
         shell=/bin/bash
 
 ##
@@ -22,7 +31,7 @@
   authorized_key: key="{{ users_ssh_local_pubkey }}"
                   user={{ root_user }}
                   manage_dir=yes
-                  path="/home/{{ root_user }}/.ssh/authorized_keys"
+                  path="/{{ root_user }}/.ssh/authorized_keys"
 
 - name: copy private ssh key to deployer
   copy: src="{{ users_ssh_app_prv_key }}"
@@ -38,4 +47,4 @@
     line="PasswordAuthentication no"
     state=present
   notify:
-    - restart sshd
+    - restart ssh

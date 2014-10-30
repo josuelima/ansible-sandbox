@@ -6,6 +6,11 @@
     src:  'config/database.yml.j2'
     dest: '{{ app_home_path }}/config/database.yml'
 
+- name: Copy environment variables
+  template:
+    src:  'config/application.yml.j2'
+    dest: '{{ app_home_path }}/config/application.yml'
+
 - name: Install / update gems
   command: bundle install --deployment --without=development test
            chdir={{ app_home_path }}

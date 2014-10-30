@@ -1,0 +1,6 @@
+# Sudoers configs for deploy group
+# This file is managed by Ansible, all changes in production will be lost
+# Source: http://github.com/josuelima/ansible-sandbox
+
+# Members of the {{ app_user_group }} group may gain root privileges
+%{{ app_user_group }} ALL=(ALL) NOPASSWD:ALL

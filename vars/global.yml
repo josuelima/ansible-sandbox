@@ -1,7 +1,9 @@
 ##
 # Credentials path on your local machine
 credentials_path: '/etc/ansible/credentials'
-root_user:        'vagrant'
+
+# server vars
+root_user: 'root'
 
 # Global variables available to all roles
 app_name:       bolao
@@ -12,7 +14,7 @@ app_home_path:  '{{ app_user_home }}/{{ app_name }}'
 
 # Database variables
 database_user: 'root'
-database_pass: "{{ lookup('password', '/etc/ansible/credentials/db_pass length=20') }}"
+database_pass: "{{ lookup('password', credentials_path + '/db_pass length=20') }}"
 database_name: '{{ app_name }}'
 
 # Running variables for sockets
@@ -22,3 +24,7 @@ app_socket_path: 'unix://{{ app_run_path }}/{{ app_name }}.sock'
 # git repo
 app_repo_url: 'git@github.com:josuelima/bolao.git'
 app_version:  'deploy' # git branch
+
+# environment vars (specific for bolao app)
+app_facebook_id:   "{{ lookup('file', credentials_path + '/facebook_id') }}"
+app_facebook_pass: "{{ lookup('file', credentials_path + '/facebook_pass') }}"

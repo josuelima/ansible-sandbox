@@ -1,9 +1,9 @@
 ##
 # This playbook configures a server ready to run a rails app
-# ATT: run this playbook with --ask-pass if it's the very first access
+# ATT: run this playbook with --ask-pass if it's first access
 ---
-- hosts: vagrant
-  user:  vagrant
+- hosts: webserver
+  user:  root
   sudo:  true
   vars_files: 
     - ['vars/global.yml']

@@ -2,7 +2,7 @@
 # This playbook configures and deploy a rails app
 # to a pre-configured ubuntu host
 ---
-- hosts: vagrant
+- hosts: webserver
   user:  deploy
   sudo:  true
   vars_files: 
