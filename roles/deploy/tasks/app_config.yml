@@ -27,3 +27,8 @@
   command: bundle exec rake db:migrate RAILS_ENV=production
            chdir={{ app_home_path }}
   sudo_user: '{{ app_user }}'
+
+- name: Compile assets
+  command: bundle exec rake assets:precompile RAILS_ENV=production
+           chdir={{ app_home_path }}
+  sudo_user: '{{ app_user }}'
