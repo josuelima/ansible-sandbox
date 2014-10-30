@@ -27,3 +27,6 @@
 
 - name: Restart puma
   service: name=bolao state=restarted
+
+- name: Enable service to start on boot
+  service: name=bolao enabled=yes
