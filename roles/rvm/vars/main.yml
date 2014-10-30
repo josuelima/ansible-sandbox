@@ -6,6 +6,7 @@ rvm_temp_path:    '/tmp'
 rvm_stable_vers:  'https://raw.githubusercontent.com/wayneeseguin/rvm/master/VERSION'
 rvm_installer:    'https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer'
 rvm_flags:        '--auto-dotfiles'
+rvm_gpg_keys:     'D39DC0E3'
 
 # Should rvm always be upgraded?
 rvm_upgrade:      False

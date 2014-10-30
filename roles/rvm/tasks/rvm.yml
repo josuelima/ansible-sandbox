@@ -34,6 +34,11 @@
     mode: 0755
   when: not rvm_binary.stat.exists or rvm_upgrade
 
+- name: Import GPG keys
+  command: 'gpg --keyserver hkp://keys.gnupg.net --recv-keys {{ rvm_gpg_keys }}'
+  changed_when: False
+  when: not rvm_binary.stat.exists and rvm_gpg_keys
+
 - name: Install rvm stable
   command: >
     {{ rvm_temp_path }}/rvm-installer.sh stable
